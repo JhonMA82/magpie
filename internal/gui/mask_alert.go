@@ -129,32 +129,32 @@ func (m *maskAlerts) flush() {
 	m.send(n)
 }
 
-// maskKinds are the kinds' names in a notification, in en, zh, zh-TW, ja
-// and de: the 脱敏 page's own words for them (MASK_KINDS in app.js).
-var maskKinds = map[string][5]string{
-	"API_KEY":     {"API keys", "API 密钥", "API 金鑰", "API キー", "API-Schlüssel"},
-	"PRIVATE_KEY": {"Private keys", "私钥", "私鑰", "秘密鍵", "Private Schlüssel"},
-	"TOKEN":       {"Tokens", "Token", "Token", "トークン", "Token"},
-	"PASSWORD":    {"Passwords", "密码", "密碼", "パスワード", "Passwörter"},
-	"SECRET":      {"Secrets", "机密", "機密", "シークレット", "Geheimnisse"},
-	"EMAIL":       {"Emails", "邮箱", "電子郵件", "メール", "E-Mails"},
-	"PHONE":       {"Phone numbers", "手机号", "電話號碼", "電話番号", "Telefonnummern"},
-	"ID_CARD":     {"ID numbers", "身份证号", "身分證號", "身分証番号", "Ausweisnummern"},
-	"BANK_CARD":   {"Bank cards", "银行卡号", "銀行卡號", "銀行カード", "Bankkarten"},
-	"PERSON":      {"Names", "姓名", "姓名", "氏名", "Namen"},
-	"ADDRESS":     {"Addresses", "地址", "地址", "住所", "Adressen"},
-	"ACCOUNT":     {"Account numbers", "账号", "帳號", "口座番号", "Kontonummern"},
-	"SSN":         {"SSNs", "社会安全号", "社會安全號碼", "社会保障番号", "SSNs"},
-	"PASSPORT":    {"Passports", "护照号", "護照號碼", "パスポート番号", "Reisepässe"},
-	"IBAN":        {"IBANs", "IBAN", "IBAN", "IBAN", "IBANs"},
-	"BIRTHDAY":    {"Birthdays", "生日", "生日", "誕生日", "Geburtstage"},
-	"MAC":         {"MAC addresses", "MAC 地址", "MAC 位址", "MAC アドレス", "MAC-Adressen"},
-	"SERIAL":      {"Serial numbers", "序列号", "序號", "シリアル番号", "Seriennummern"},
-	"USERNAME":    {"User names", "用户名", "使用者名稱", "ユーザー名", "Benutzernamen"},
-	"HOSTNAME":    {"Computer names", "电脑名", "電腦名稱", "コンピュータ名", "Computernamen"},
-	"IP":          {"IP addresses", "IP 地址", "IP 位址", "IP アドレス", "IP-Adressen"},
-	"BUCKET":      {"Buckets", "存储桶", "儲存桶", "バケット", "Buckets"},
-	"TERM":        {"Your words", "你的词", "你的詞", "あなたの語", "Deine Wörter"},
+// maskKinds are the kinds' names in a notification, in en, zh, zh-TW, ja,
+// de and es: the 脱敏 page's own words for them (MASK_KINDS in app.js).
+var maskKinds = map[string][6]string{
+	"API_KEY":     {"API keys", "API 密钥", "API 金鑰", "API キー", "API-Schlüssel", "Claves de API"},
+	"PRIVATE_KEY": {"Private keys", "私钥", "私鑰", "秘密鍵", "Private Schlüssel", "Claves privadas"},
+	"TOKEN":       {"Tokens", "Token", "Token", "トークン", "Token", "Tokens"},
+	"PASSWORD":    {"Passwords", "密码", "密碼", "パスワード", "Passwörter", "Contraseñas"},
+	"SECRET":      {"Secrets", "机密", "機密", "シークレット", "Geheimnisse", "Secretos"},
+	"EMAIL":       {"Emails", "邮箱", "電子郵件", "メール", "E-Mails", "Correos electrónicos"},
+	"PHONE":       {"Phone numbers", "手机号", "電話號碼", "電話番号", "Telefonnummern", "Números de teléfono"},
+	"ID_CARD":     {"ID numbers", "身份证号", "身分證號", "身分証番号", "Ausweisnummern", "Números de identificación"},
+	"BANK_CARD":   {"Bank cards", "银行卡号", "銀行卡號", "銀行カード", "Bankkarten", "Tarjetas bancarias"},
+	"PERSON":      {"Names", "姓名", "姓名", "氏名", "Namen", "Nombres"},
+	"ADDRESS":     {"Addresses", "地址", "地址", "住所", "Adressen", "Direcciones"},
+	"ACCOUNT":     {"Account numbers", "账号", "帳號", "口座番号", "Kontonummern", "Números de cuenta"},
+	"SSN":         {"SSNs", "社会安全号", "社會安全號碼", "社会保障番号", "SSNs", "Números de seguro social"},
+	"PASSPORT":    {"Passports", "护照号", "護照號碼", "パスポート番号", "Reisepässe", "Pasaportes"},
+	"IBAN":        {"IBANs", "IBAN", "IBAN", "IBAN", "IBANs", "IBAN"},
+	"BIRTHDAY":    {"Birthdays", "生日", "生日", "誕生日", "Geburtstage", "Cumpleaños"},
+	"MAC":         {"MAC addresses", "MAC 地址", "MAC 位址", "MAC アドレス", "MAC-Adressen", "Direcciones MAC"},
+	"SERIAL":      {"Serial numbers", "序列号", "序號", "シリアル番号", "Seriennummern", "Números de serie"},
+	"USERNAME":    {"User names", "用户名", "使用者名稱", "ユーザー名", "Benutzernamen", "Nombres de usuario"},
+	"HOSTNAME":    {"Computer names", "电脑名", "電腦名稱", "コンピュータ名", "Computernamen", "Nombres de computadora"},
+	"IP":          {"IP addresses", "IP 地址", "IP 位址", "IP アドレス", "IP-Adressen", "Direcciones IP"},
+	"BUCKET":      {"Buckets", "存储桶", "儲存桶", "バケット", "Buckets", "Buckets"},
+	"TERM":        {"Your words", "你的词", "你的詞", "あなたの語", "Deine Wörter", "Tus palabras"},
 }
 
 func langIndex(lang string) int {
@@ -167,6 +167,8 @@ func langIndex(lang string) int {
 		return 3
 	case "de":
 		return 4
+	case "es":
+		return 5
 	}
 	return 0
 }
@@ -227,6 +229,12 @@ func maskAlertText(lang string, n maskNote, agentName func(string) string) (titl
 			title = "1 neuer Wert maskiert"
 		} else {
 			title = fmt.Sprintf("%d neue Werte maskiert", t)
+		}
+	case "es":
+		if t == 1 {
+			title = "1 valor nuevo enmascarado"
+		} else {
+			title = fmt.Sprintf("%d valores nuevos enmascarados", t)
 		}
 	default:
 		if t == 1 {

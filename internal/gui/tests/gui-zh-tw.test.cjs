@@ -112,7 +112,7 @@ for (const [name, engine] of [["webkit", webkit], ["chromium", chromium]]) {
         const items = page.locator(".proto-menu .pm-item");
         await items.first().waitFor();
         const menu = await items.evaluateAll((bs) => bs.map((b) => { const n = b.querySelector(".pm-name"); return { name: n.textContent, cut: n.scrollWidth > n.clientWidth + 1, inside: b.getBoundingClientRect().right <= innerWidth }; }));
-        assert.deepEqual(menu.map((m) => m.name), ["跟隨系統", "English", "简体中文", "繁體中文", "日本語", "Deutsch"]);
+        assert.deepEqual(menu.map((m) => m.name), ["跟隨系統", "English", "简体中文", "繁體中文", "日本語", "Deutsch", "Español"]);
         assert.ok(menu.every((m) => !m.cut && m.inside), `${width}px menu: ${JSON.stringify(menu)}`);
         await page.close();
       }

@@ -43,7 +43,7 @@ func TestTrayTooltipFollowsMagpiesLanguage(t *testing.T) {
 	}
 
 	english := []string{"Today", "tokens", "K in", "0 in", " out", "cached", "request", " used", " left", "resets", "pace ", "as of", "Last 7", "no known price", "couldn't", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
-	for _, lang := range []string{"zh", "zh-TW", "ja", "de"} {
+	for _, lang := range []string{"zh", "zh-TW", "ja", "de", "es"} {
 		priced := today
 		priced.Cost, priced.Unpriced = 1.5, 1
 		readAt := now.Add(-2 * time.Hour)
@@ -68,6 +68,9 @@ func TestTrayTooltipFollowsMagpiesLanguage(t *testing.T) {
 		tips = append(tips, view)
 		for _, tip := range tips {
 			for _, w := range english {
+				if lang == "es" && w == "tokens" {
+					continue // Spanish says tokens too
+				}
 				if strings.Contains(tip, w) {
 					t.Errorf("%s tooltip says %q in English:\n%s", lang, w, tip)
 				}

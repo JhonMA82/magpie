@@ -36,8 +36,8 @@ func signInDays(at, now time.Time) int {
 }
 
 // signInText is the notification of a sign-in alert in the language (en,
-// zh, zh-TW, ja or de): the subscription and account, and that it has to
-// be signed in again, or in how many days its sign-in ends.
+// zh, zh-TW, ja, de or es): the subscription and account, and that it has
+// to be signed in again, or in how many days its sign-in ends.
 func signInText(lang string, a provider.SignInAlert, now time.Time) (title, body string) {
 	title = a.Name
 	if a.User != "" {
@@ -71,6 +71,14 @@ func signInText(lang string, a provider.SignInAlert, now time.Time) (title, body
 			return title, fmt.Sprintf("Die Anmeldung endet in %d Tagen – zum erneuten Anmelden klicken", n)
 		}
 		return title, "Abgemeldet – zum erneuten Anmelden klicken"
+	case "es":
+		if n == 1 {
+			return title, "La sesión vence en 1 día; haz clic para iniciar sesión de nuevo"
+		}
+		if n > 0 {
+			return title, fmt.Sprintf("La sesión vence en %d días; haz clic para iniciar sesión de nuevo", n)
+		}
+		return title, "Sesión cerrada; haz clic para iniciar sesión de nuevo"
 	}
 	if n == 1 {
 		return title, "Sign-in ends in 1 day — click to sign in again"

@@ -26,10 +26,10 @@ test("no language has a key twice", () => {
 
 test("a plugin's words are said in every language", () => {
   for (const { file, dict } of strings().files.slice(1)) {
-    assert.deepEqual(Object.keys(dict).sort(), ["de", "ja", "zh", "zh-TW"], file);
+    assert.deepEqual(Object.keys(dict).sort(), ["de", "es", "ja", "zh", "zh-TW"], file);
     const zh = Object.keys(dict.zh);
     assert.ok(zh.length, `${file} says nothing`);
-    for (const lang of ["zh-TW", "ja", "de"]) assert.deepEqual(Object.keys(dict[lang]).sort(), [...zh].sort(), `${file} ${lang}`);
+    for (const lang of ["zh-TW", "ja", "de", "es"]) assert.deepEqual(Object.keys(dict[lang]).sort(), [...zh].sort(), `${file} ${lang}`);
   }
 });
 

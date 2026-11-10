@@ -13,7 +13,7 @@ import (
 // TestInstallWordsEveryLanguage: each language the dialog speaks has every
 // word, with the folder (and the error) where the English has them.
 func TestInstallWordsEveryLanguage(t *testing.T) {
-	for _, lang := range []string{"en", "zh", "zh-TW", "ja", "de"} {
+	for _, lang := range []string{"en", "zh", "zh-TW", "ja", "de", "es"} {
 		w, ok := installText[lang]
 		if !ok {
 			t.Fatalf("%s: no words", lang)

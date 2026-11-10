@@ -30,6 +30,9 @@ func TestAlertText(t *testing.T) {
 		{"de", w, false, "Claude Code · a@b.c", "5 Stunden: 82,3% verbraucht, Zurücksetzung um 14:30"},
 		{"de", w, true, "Claude Code · a@b.c", "5 Stunden: 17,7% übrig, Zurücksetzung um 14:30"},
 		{"de", b, false, "DeepSeek", "Guthaben auf ¥4.20 gesunken (Warnschwelle 5)"},
+		{"es", w, false, "Claude Code · a@b.c", "5 horas: 82,3% usado, se restablece a las 14:30"},
+		{"es", w, true, "Claude Code · a@b.c", "5 horas: 17,7% restante, se restablece a las 14:30"},
+		{"es", b, false, "DeepSeek", "El saldo bajó a ¥4.20 (alerta en 5)"},
 	} {
 		title, body := alertText(c.lang, c.a, 5, c.left, now)
 		if title != c.title || body != c.body {
@@ -57,6 +60,15 @@ func TestAlertText(t *testing.T) {
 	if _, body := alertText("de", week, 0, false, now); body != "7 Tage: 80% verbraucht, Zurücksetzung morgen um 14:30" {
 		t.Errorf("de tomorrow: %q", body)
 	}
+	if _, body := alertText("es", week, 0, false, now); body != "7 días: 80% usado, se restablece mañana a las 14:30" {
+		t.Errorf("es tomorrow: %q", body)
+	}
+	if _, body := alertText("es", weekly, 0, false, now); body != "Semanal: 80% usado, se restablece mañana a las 14:30" {
+		t.Errorf("es weekly: %q", body)
+	}
+	if got := alertClockEs(now.Add(72*time.Hour), now); got != "domingo a las 09:00" {
+		t.Errorf("es weekday: %q", got)
+	}
 }
 
 // the reset reminder's lines (#720): what is left of a window, and resets
@@ -81,6 +93,8 @@ func TestReminderText(t *testing.T) {
 		{"zh-TW", c, "2 張重置卡尚未使用，將於 明天 14:30 過期"},
 		{"ja", c, "未使用のリセット 2 回分が 明日 14:30 に期限切れになります"},
 		{"de", c, "2 ungenutzte Resets verfallen morgen um 14:30"},
+		{"es", r, "7 días: quedan 55%, se restablece mañana a las 14:30; úsalo antes"},
+		{"es", c, "2 restablecimientos sin usar vencen mañana a las 14:30"},
 	} {
 		title, body := alertText(x.lang, x.a, 0, true, now)
 		if title != "Codex · a@b.c" || body != x.body {

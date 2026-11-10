@@ -404,6 +404,7 @@ var toolLoopNotices = map[string]string{
 	langJA:   "このターンはモデルに送る前に止めました：エージェントが同じツール呼び出しを %d 回続けて実行し、毎回同じ結果を受け取りました（%s）。モデルが同じことを繰り返しており、続けても進展のないリクエストが増えるだけなので、このターンはどこにも送っていません。次にどうするかをエージェントに伝えれば会話は続きます。設定 › モデル › 応答 › ループする応答を止める でこのチェックをオフにできます。",
 	langKO:   "이 턴은 모델에 보내기 전에 중단되었습니다: 에이전트가 같은 도구 호출을 %d번 연속으로 실행했고 매번 같은 결과를 받았습니다(%s). 모델이 같은 일을 반복하고 있어 계속해도 진전 없이 요청만 늘어나므로, 이 턴은 어디에도 보내지 않았습니다. 에이전트에게 어떻게 진행할지 알려 주면 대화가 이어집니다. Settings › Models › Replies › Stop looping replies 에서 이 검사를 끌 수 있습니다.",
 	langDE:   "Dieser Zug wurde angehalten, bevor er das Modell erreichte: Der Agent hat denselben Tool-Aufruf %d-mal hintereinander ausgeführt und jedes Mal dasselbe Ergebnis erhalten (%s). Das Modell wiederholt sich, und jeder weitere Zug wäre eine weitere Anfrage ohne Fortschritt, daher wurde dieser Zug nirgendwohin gesendet. Sag dem Agenten, wie es weitergeht, und das Gespräch läuft weiter; Einstellungen › Modelle › Antworten › Schleifende Antworten beenden schaltet diese Prüfung aus.",
+	langES:   "Este turno se detuvo antes de llegar al modelo: el agente ejecutó la misma llamada de herramienta %d veces seguidas y obtuvo el mismo resultado cada vez (%s). El modelo está atascado repitiéndola, y cada turno adicional sería otra solicitud sin avance, así que este turno no se envió a ningún lado. Dile al agente cómo continuar y la conversación seguirá; Configuración › Modelos › Respuestas › Detener respuestas en bucle desactiva esta comprobación.",
 }
 
 // writeLocalText answers req with text in from's API, as a whole reply or

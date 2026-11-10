@@ -27,7 +27,7 @@ func TestWebView2Missing(t *testing.T) {
 // The box names the runtime, gives Microsoft's page and asks to open it
 // (Yes opens it), in each language the app speaks, English otherwise.
 func TestWebView2Notice(t *testing.T) {
-	for _, lang := range []string{"en", "zh", "zh-TW", "ja", "de", "pt"} {
+	for _, lang := range []string{"en", "zh", "zh-TW", "ja", "de", "es", "pt"} {
 		title, body := webView2Notice(lang)
 		if !strings.Contains(title, "WebView2") || !strings.Contains(body, "WebView2") {
 			t.Errorf("%s: doesn't name WebView2: %q / %q", lang, title, body)

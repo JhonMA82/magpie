@@ -11,6 +11,7 @@ const names = {
   'zh-TW': ['批次管理', '隱藏所選項目', '取消隱藏所選項目', '全選搜尋結果', '反選搜尋結果', '選取未連線項目', '清除選取'],
   ja: ['エージェントを一括管理', '選択項目を非表示', '選択項目の非表示を解除', '検索結果をすべて選択', '検索結果の選択を反転', '未接続のエージェントを選択', '選択を解除'],
   de: ['Agents verwalten', 'Auswahl ausblenden', 'Auswahl einblenden', 'Suchergebnisse auswählen', 'Auswahl der Suchergebnisse umkehren', 'Nicht verbundene Agents auswählen', 'Auswahl aufheben'],
+  es: ['Administrar agentes', 'Ocultar seleccionados', 'Mostrar seleccionados', 'Seleccionar resultados de búsqueda', 'Invertir selección de búsqueda', 'Seleccionar agentes no conectados', 'Borrar selección'],
 };
 for (const engine of process.env.BROWSER ? [process.env.BROWSER] : ['chromium', 'webkit']) {
   for (const lang of Object.keys(names)) {
@@ -29,7 +30,7 @@ for (const engine of process.env.BROWSER ? [process.env.BROWSER] : ['chromium', 
       await page.route('**/*', async (route) => {
         const req = route.request(), url = new URL(req.url());
         const json = (data) => route.fulfill({ json: data });
-        if (req.method() === 'POST') posts.push([url.pathname, req.postDataJSON()]);
+        if (req.method() === 'POST' && url.pathname === '/api/agents/arrange') posts.push([url.pathname, req.postDataJSON()]);
         if (url.pathname === '/boot.js') return route.fulfill({ contentType: 'text/javascript', body: `window.bootPrefs = ${JSON.stringify({lang, theme, web:true})};` });
         if (url.pathname === '/wails/runtime.js') return route.fulfill({ contentType: 'text/javascript', body: 'export const Window = {};' });
         if (url.pathname === '/api/state') return json(state);

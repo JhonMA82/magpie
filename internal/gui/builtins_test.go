@@ -296,7 +296,7 @@ func TestBuiltinsTranslated(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, lang := range []string{"zh: {", `"zh-TW": {`, "ja: {", "de: {"} {
+	for _, lang := range []string{"zh: {", `"zh-TW": {`, "ja: {", "de: {", "es: {"} {
 		_, block, ok := strings.Cut(string(src), "\n  "+lang+"\n")
 		if !ok {
 			t.Fatalf("no %s block", lang)

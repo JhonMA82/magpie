@@ -45,6 +45,11 @@ var barkWords = map[string]map[string]string{
 		"none": "Heute noch keine Anfragen", "near": "Nahe am Limit:", "clear": "Kein Kontingent ist nahe am Limit.",
 		"more": "…und %d weitere", "test": "Bark ist eingerichtet: Hinweise und die tägliche Übersicht kommen hierher.",
 	},
+	"es": {
+		"title": "magpie · hoy", "spent": "Gastaste unos %s hoy · %d solicitudes", "calls": "%d solicitudes hoy",
+		"none": "Aún no hay solicitudes hoy", "near": "Cerca del límite:", "clear": "Ninguna asignación está cerca de su límite.",
+		"more": "…y %d más", "test": "Bark está configurado: las alertas y el resumen diario llegan aquí.",
+	},
 }
 
 func barkWord(lang, key string, args ...any) string {

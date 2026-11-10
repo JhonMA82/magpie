@@ -16,7 +16,15 @@ func TestLangOfEachLanguage(t *testing.T) {
 		{"parse 解析器が落ちる原因を調べて", langJA}, // Han beside kana is Japanese
 		{"parse가 왜 패닉하나요? 확인해 주세요", langKO},
 		{"Warum stürzt parse ab? Kannst du das bitte prüfen und es nicht löschen", langDE},
+		{"¿Por qué falla el parser? Revisa el archivo y arréglalo, por favor", langES},
+		{"¿Funciona?", langES},
+		{"ayuda", langES},
+		{"no funciona", langES},
+		{"esto no sirve", langES},
+		{"por favor", langES},
 		{"why does parse panic? please check it and fix the bug", langEN},
+		{"rename the parses field and check the parser", langEN},
+		{"no idea what this is", langEN},
 		// mixed: a Chinese ask with English code and errors around it
 		{"fn parse(s: &str) -> Ast { todo!() } thread 'main' panicked at src/parser.rs:3 not yet implemented\n修一下", langZH},
 		// an English ask quoting one Chinese name or a German word isn't that language
@@ -79,6 +87,7 @@ func TestToolLoopNoticeInTheConversationsLanguage(t *testing.T) {
 		langJA:   {"parse がパニックするのはなぜ？", "このターンはモデルに送る前に止めました"},
 		langKO:   {"parse가 왜 패닉하나요?", "이 턴은 모델에 보내기 전에 중단되었습니다"},
 		langDE:   {"Warum stürzt parse ab? Kannst du das prüfen?", "Dieser Zug wurde angehalten"},
+		langES:   {"¿Por qué falla el parser? Revisa el archivo y arréglalo", "Este turno se detuvo"},
 	}
 	for lang, a := range asks {
 		f := toolLoopNotices[lang]

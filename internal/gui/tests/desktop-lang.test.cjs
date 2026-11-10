@@ -50,6 +50,7 @@ const W = {
   "zh-TW": { details: "詳情", says: "沒有中文" },
   ja: { details: "詳細" },
   de: { details: "Details" },
+  es: { details: "Detalles" },
 };
 const cd = '.row.agent[data-id="claude-desktop"]';
 

@@ -167,9 +167,51 @@ func alertClockDe(at, now time.Time) string {
 	return at.Format("2.1. um 15:04")
 }
 
+// alertWindowEs is a window's name in Spanish; one it doesn't know stays as
+// the vendor named it.
+func alertWindowEs(name string) string {
+	if m := hoursName.FindStringSubmatch(name); m != nil {
+		if m[1] == "1" {
+			return "1 hora"
+		}
+		return m[1] + " horas"
+	}
+	if m := daysName.FindStringSubmatch(name); m != nil {
+		if m[1] == "1" {
+			return "1 día"
+		}
+		return m[1] + " días"
+	}
+	switch name {
+	case "Weekly":
+		return "Semanal"
+	case "Monthly":
+		return "Mensual"
+	case "Daily":
+		return "Diario"
+	}
+	return name
+}
+
+// alertClockEs is provider.ResetClock in Spanish.
+func alertClockEs(at, now time.Time) string {
+	at, now = at.Local(), now.Local()
+	day := func(t time.Time) time.Time { y, m, d := t.Date(); return time.Date(y, m, d, 0, 0, 0, 0, time.Local) }
+	switch days := int(math.Round(day(at).Sub(day(now)).Hours() / 24)); {
+	case days <= 0:
+		return "a las " + at.Format("15:04")
+	case days == 1:
+		return "mañana a las " + at.Format("15:04")
+	case days < 7:
+		return [...]string{"domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"}[at.Weekday()] + " a las " + at.Format("15:04")
+	}
+	return fmt.Sprintf("%d/%d a las %s", at.Day(), at.Month(), at.Format("15:04"))
+}
+
 // alertText is a usage alert as a notification says it, in the language
-// (en, zh, zh-TW, ja or de): the card, and what reached the line. left says a
-// window by how much of it is left, as the Usage page does when set to.
+// (en, zh, zh-TW, ja, de or es): the card, and what reached the line. left
+// says a window by how much of it is left, as the Usage page does when set
+// to.
 func alertText(lang string, a provider.QuotaAlert, bal float64, left bool, now time.Time) (title, body string) {
 	title = a.Name
 	if a.User != "" {
@@ -189,6 +231,8 @@ func alertText(lang string, a provider.QuotaAlert, bal float64, left bool, now t
 			return title, fmt.Sprintf("残高が %s まで減りました（通知ライン %s）", a.Balance, line)
 		case "de":
 			return title, fmt.Sprintf("Guthaben auf %s gesunken (Warnschwelle %s)", a.Balance, line)
+		case "es":
+			return title, fmt.Sprintf("El saldo bajó a %s (alerta en %s)", a.Balance, line)
 		}
 		return title, fmt.Sprintf("Balance down to %s (alert at %s)", a.Balance, line)
 	}
@@ -238,6 +282,17 @@ func alertText(lang string, a provider.QuotaAlert, bal float64, left bool, now t
 		}
 		return title, body
 	}
+	if lang == "es" {
+		pct = strings.Replace(pct, ".", ",", 1) // Spanish decimal comma
+		body = fmt.Sprintf("%s: %s usado", alertWindowEs(a.Window), pct)
+		if left {
+			body = fmt.Sprintf("%s: %s restante", alertWindowEs(a.Window), pct)
+		}
+		if a.ResetsAt != nil {
+			body += ", se restablece " + alertClockEs(*a.ResetsAt, now)
+		}
+		return title, body
+	}
 	body = fmt.Sprintf("%s: %s used", a.Window, pct)
 	if left {
 		body = fmt.Sprintf("%s: %s left", a.Window, pct)
@@ -265,6 +320,11 @@ func reminderText(lang string, a provider.QuotaAlert, now time.Time) string {
 			return fmt.Sprintf("未使用のリセット %d 回分が %s に期限切れになります", a.Credits, alertClockJa(at, now))
 		case "de":
 			return fmt.Sprintf("%d ungenutzte Resets verfallen %s", a.Credits, alertClockDe(at, now))
+		case "es":
+			if a.Credits == 1 {
+				return fmt.Sprintf("1 restablecimiento sin usar vence %s", alertClockEs(at, now))
+			}
+			return fmt.Sprintf("%d restablecimientos sin usar vencen %s", a.Credits, alertClockEs(at, now))
 		}
 		if a.Credits == 1 {
 			return "1 reset unused, expiring " + provider.ResetClock(at, now)
@@ -281,6 +341,8 @@ func reminderText(lang string, a provider.QuotaAlert, now time.Time) string {
 		return fmt.Sprintf("%s枠が %s 残っています、%s にリセット", alertWindowJa(a.Window), pct, alertClockJa(at, now))
 	case "de":
 		return fmt.Sprintf("%s: noch %s übrig, Zurücksetzung %s", alertWindowDe(a.Window), strings.Replace(pct, ".", ",", 1), alertClockDe(at, now))
+	case "es":
+		return fmt.Sprintf("%s: quedan %s, se restablece %s; úsalo antes", alertWindowEs(a.Window), strings.Replace(pct, ".", ",", 1), alertClockEs(at, now))
 	}
 	return fmt.Sprintf("%s: %s left, renews %s — use it before then", a.Window, pct, provider.ResetClock(at, now))
 }

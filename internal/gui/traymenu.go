@@ -149,9 +149,44 @@ var trayDe = map[string]string{
 	"Today: %s":                           "Heute: %s",
 }
 
+// trayEs is the tray menu in Spanish.
+var trayEs = map[string]string{
+	"Open magpie":                          "Abrir magpie",
+	"Version %s":                           "Versión %s",
+	"Restart to Update":                    "Reiniciar para actualizar",
+	"Restart to Update to %s":              "Reiniciar para actualizar a %s",
+	"Quit magpie":                          "Salir de magpie",
+	"Restart Now to Update":                "Reiniciar ahora para actualizar",
+	"Restart Now to Update (%d in flight)": "Reiniciar ahora para actualizar (%d en curso)",
+	// the gateway paused from the menu (gatewaypause.go)
+	"Pause Gateway":  "Pausar gateway",
+	"Resume Gateway": "Reanudar gateway",
+	// the tray icon's tooltip (trayusage.go; yi_time on Discord)
+	"%s used":                             "%s usado",
+	"%s left":                             "%s restante",
+	"pace %s":                             "ritmo %s",
+	"resets in %s":                        "se restablece en %s",
+	"%dd %dh":                             "%d d %d h",
+	"%dh %dm":                             "%d h %d min",
+	"%dm":                                 "%d min",
+	"as of %s, couldn't be read just now": "a las %s, no se pudo leer ahora",
+	"Jan 2 15:04":                         "2/1 15:04",
+	"Today in magpie":                     "Hoy en magpie",
+	"Last 7 days in magpie":               "Últimos 7 días en magpie",
+	"%d requests":                         "%d solicitudes",
+	"%d request":                          "%d solicitud",
+	", %d with no known price":            ", %d sin precio conocido",
+	"%s in":                               "%s de entrada",
+	"%s out":                              "%s de salida",
+	"%s cached":                           "%s en caché",
+	"%s tokens (%s)":                      "%s tokens (%s)",
+	"Today: no requests yet":              "Hoy: aún no hay solicitudes",
+	"Today: %s":                           "Hoy: %s",
+}
+
 // trayWords are the tray menu's and the tray icon's tooltip's
 // translations by language.
-var trayWords = map[string]map[string]string{"zh": trayZh, "zh-TW": trayZhTW, "ja": trayJa, "de": trayDe}
+var trayWords = map[string]map[string]string{"zh": trayZh, "zh-TW": trayZhTW, "ja": trayJa, "de": trayDe, "es": trayEs}
 
 // onLang relabels the tray menu when the Settings page changes the
 // language; set by the process that has the tray.
@@ -160,10 +195,11 @@ var onLang func()
 // trayLang is the language the tray menu is in, as the page picks its own:
 // the setting, or with "system" (or none) the system's: Traditional Chinese
 // for Taiwan, Hong Kong, Macau and any zh-Hant (zh_TW.UTF-8, zh-Hant-TW),
-// Simplified for any other zh, Japanese for any ja, German for any de.
+// Simplified for any other zh, Japanese for any ja, German for any de,
+// Spanish for any es.
 func trayLang(pref string, system func() string) string {
 	switch pref {
-	case "en", "zh", "zh-TW", "ja", "de":
+	case "en", "zh", "zh-TW", "ja", "de", "es":
 		return pref
 	}
 	switch sys := strings.ReplaceAll(strings.ToLower(system()), "_", "-"); {
@@ -175,6 +211,8 @@ func trayLang(pref string, system func() string) string {
 		return "ja"
 	case strings.HasPrefix(sys, "de"):
 		return "de"
+	case strings.HasPrefix(sys, "es"):
+		return "es"
 	}
 	return "en"
 }
@@ -191,11 +229,11 @@ func zhTraditional(sys string) bool {
 }
 
 // notesLang is the language release notes are asked in for lang: there are
-// no German ones, so German asks for the English, and Traditional Chinese
-// asks for the Chinese ones.
+// no German or Spanish ones, so both ask for the English, and Traditional
+// Chinese asks for the Chinese ones.
 func notesLang(lang string) string {
 	switch lang {
-	case "de":
+	case "de", "es":
 		return "en"
 	case "zh-TW":
 		return "zh"

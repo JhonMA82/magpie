@@ -56,6 +56,9 @@ func TestSignInText(t *testing.T) {
 		{"ja", in(24 * time.Hour), "サインインはあと 1 日で切れます。クリックしてサインインし直してください"},
 		{"de", in(5 * time.Hour), "Die Anmeldung endet in 1 Tag – zum erneuten Anmelden klicken"},
 		{"de", gone, "Abgemeldet – zum erneuten Anmelden klicken"},
+		{"es", in(2*24*time.Hour + time.Hour), "La sesión vence en 3 días; haz clic para iniciar sesión de nuevo"},
+		{"es", in(5 * time.Hour), "La sesión vence en 1 día; haz clic para iniciar sesión de nuevo"},
+		{"es", gone, "Sesión cerrada; haz clic para iniciar sesión de nuevo"},
 	} {
 		title, body := signInText(c.lang, c.a, now)
 		if title != "Claude · a@example.com" || body != c.want {

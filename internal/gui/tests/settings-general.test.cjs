@@ -13,7 +13,7 @@
 // - Codex's and Claude Code's own settings aren't here: they are on the
 //   agents' rows (the owner, 10-20);
 // - Language is a button (never a native <select>) showing the language;
-//   its menu, the app's own, lists all six, and a pick saves lang and
+//   its menu, the app's own, lists all seven, and a pick saves lang and
 //   draws the page in it, the button staying under the pointer;
 // - no row has a coloured stripe down its left;
 // - every row past the first has its line, the one after the agents' empty
@@ -28,9 +28,9 @@ const { chromium, webkit } = require("playwright");
 const { watchSettingsReads, settingsDrawn } = require("./reader.cjs");
 
 const assets = path.resolve(__dirname, "../assets");
-const names = { en: "English", zh: "简体中文", "zh-TW": "繁體中文", ja: "日本語", de: "Deutsch" };
-const appearance = { en: "Appearance", zh: "外观", "zh-TW": "外觀", ja: "外観", de: "Darstellung" };
-const system = { en: "System", zh: "跟随系统", "zh-TW": "跟隨系統", ja: "システム", de: "System" };
+const names = { en: "English", zh: "简体中文", "zh-TW": "繁體中文", ja: "日本語", de: "Deutsch", es: "Español" };
+const appearance = { en: "Appearance", zh: "外观", "zh-TW": "外觀", ja: "外観", de: "Darstellung", es: "Apariencia" };
+const system = { en: "System", zh: "跟随系统", "zh-TW": "跟隨系統", ja: "システム", de: "System", es: "Sistema" };
 // the rows whose name says enough, found by the control they hold
 const bare = ["#themeSegs", "#colorblindSegs", "#reduceMotionSegs", "#birdSegs", "#langPick", "#textSizeSegs", "#traySegs", "#plainNamesSegs", "#loginSegs", "#dockSegs"];
 // the rows that keep a line, one each
@@ -64,7 +64,7 @@ function serve(lang, posted, st) {
 }
 
 for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium", "webkit"])) {
-  for (const lang of ["en", "zh", "zh-TW", "ja", "de"]) for (const width of [1000, 440]) {
+  for (const lang of ["en", "zh", "zh-TW", "ja", "de", "es"]) for (const width of [1000, 440]) {
     test(`${engine} ${lang} ${width}px: Settings → General says each name alone where it says enough, Language one menu`, async (t) => {
       const browser = await (engine === "webkit" ? webkit.launch() : chromium.launch({ channel: "chromium" }));
       t.after(() => browser.close());
@@ -120,7 +120,7 @@ for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium",
       }
       if (width === 1000) assert.equal(new Set(rows.rule.filter((r) => r.oneLine).map((r) => r.height)).size, 1, `one-line rows of more than one height: ${JSON.stringify(rows.rule)}`);
 
-      // Language: one button showing the language, the app's menu listing all six
+      // Language: one button showing the language, the app's menu listing all seven
       const pick = page.locator("#langPick");
       assert.equal(await pick.evaluate((b) => b.tagName), "BUTTON");
       assert.equal(await page.locator("#setPage-general select").count(), 0, "no native <select>");
@@ -141,12 +141,12 @@ for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium",
       await items.first().waitFor();
       assert.equal(await pick.getAttribute("aria-expanded"), "true");
       const menu = await items.evaluateAll((bs) => bs.map((b) => ({ name: b.querySelector(".pm-name").textContent, on: b.classList.contains("on"), inside: b.getBoundingClientRect().right <= innerWidth && b.getBoundingClientRect().left >= 0 })));
-      assert.deepEqual(menu.map((m) => m.name), [system[lang], "English", "简体中文", "繁體中文", "日本語", "Deutsch"]);
+      assert.deepEqual(menu.map((m) => m.name), [system[lang], "English", "简体中文", "繁體中文", "日本語", "Deutsch", "Español"]);
       assert.deepEqual(menu.filter((m) => m.on).map((m) => m.name), [names[lang]]);
       assert.ok(menu.every((m) => m.inside), `the menu runs off the window: ${JSON.stringify(menu)}`);
       // pick another language: saved, and the page drawn in it
       const to = lang === "ja" ? "de" : "ja";
-      const item = items.nth(["system", "en", "zh", "zh-TW", "ja", "de"].indexOf(to));
+      const item = items.nth(["system", "en", "zh", "zh-TW", "ja", "de", "es"].indexOf(to));
       const ib = await item.boundingBox();
       await page.mouse.click(ib.x + ib.width / 2, ib.y + ib.height / 2);
       for (let i = 0; i < 50 && posted.at(-1)?.lang !== to; i++) await page.waitForTimeout(50);

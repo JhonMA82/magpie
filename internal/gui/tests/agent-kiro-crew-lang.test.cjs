@@ -61,7 +61,7 @@ for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium",
       if (errors.length) console.log(errors);
       await browser.close();
     });
-    for (const lang of ["en", "zh", "zh-TW", "ja", "de"]) {
+    for (const lang of ["en", "zh", "zh-TW", "ja", "de", "es"]) {
       for (const width of [1100, 420]) {
         await t.test(`${lang} at ${width}px`, async () => {
           const page = await (await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" })).newPage();

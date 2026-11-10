@@ -236,7 +236,7 @@ func TestLoopGuardReadsEveryProtocol(t *testing.T) {
 
 // What ordinary replies are made of is never taken for a loop, as
 // reasoning or as text: magpie's own source (gateway.go's 4,900 lines,
-// the GUI's 20,000 of JavaScript and its five languages of strings), its
+// the GUI's 20,000 of JavaScript and its six languages of strings), its
 // docs and their tables, a log, a numbered list, a CSV, a hex table,
 // base64 and a run of rules and braces.
 func TestLoopGuardLeavesOrdinaryRepliesAlone(t *testing.T) {

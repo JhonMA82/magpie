@@ -73,8 +73,8 @@ func TestLinkSaidIsTranslated(t *testing.T) {
 	}
 	for exe, said := range linkSaid {
 		key, _ := json.Marshal(said)
-		if n := strings.Count(string(words), string(key)+":"); n != 4 {
-			t.Errorf("%v: i18n.js has %q in %d languages, want zh, zh-TW, ja and de", exe, said, n)
+		if n := strings.Count(string(words), string(key)+":"); n != 5 {
+			t.Errorf("%v: i18n.js has %q in %d languages, want zh, zh-TW, ja, de and es", exe, said, n)
 		}
 		if !strings.Contains(said, "{app}") || strings.Contains(said, "{exe}") != exe {
 			t.Errorf("%v: %q doesn't say {app}, or {exe} only when it is set", exe, said)

@@ -43,8 +43,8 @@ func TestBunSaidIsTranslated(t *testing.T) {
 	}
 	for why, said := range bunSaid {
 		key, _ := json.Marshal(said)
-		if n := strings.Count(string(words), string(key)+":"); n != 4 {
-			t.Errorf("%s: i18n.js has %q in %d languages, want zh, zh-TW, ja and de", why, said, n)
+		if n := strings.Count(string(words), string(key)+":"); n != 5 {
+			t.Errorf("%s: i18n.js has %q in %d languages, want zh, zh-TW, ja, de and es", why, said, n)
 		}
 	}
 }

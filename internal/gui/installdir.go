@@ -59,6 +59,13 @@ var installText = map[string]installWords{
 		downloads: "In %s landen Downloads. Wählen Sie einen anderen Ordner.",
 		failed:    "magpie kann nicht in %s installiert werden: %v",
 	},
+	"es": {
+		title: "magpie", ask: "¿Instalar magpie en esta carpeta?", install: "Instalar", change: "Cambiar…",
+		pick:      "Elige dónde instalar magpie",
+		admin:     "Solo un administrador puede escribir en %s. magpie se instala solo para ti y se actualiza solo, así que elige una carpeta tuya.",
+		downloads: "Las descargas llegan a %s. Elige otra carpeta.",
+		failed:    "magpie no se puede instalar en %s: %v",
+	},
 }
 
 // installWordsFor is the dialog's words in lang (trayLang's), English

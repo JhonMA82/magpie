@@ -20,7 +20,7 @@ const { test } = require("node:test");
 const { chromium, webkit } = require("playwright");
 
 const assets = path.resolve(__dirname, "../assets");
-const LANGS = [["en", "English"], ["zh-TW", "繁體中文"], ["ja", "日本語"], ["de", "Deutsch"], ["zh", "简体中文"]];
+const LANGS = [["en", "English"], ["zh-TW", "繁體中文"], ["ja", "日本語"], ["de", "Deutsch"], ["es", "Español"], ["zh", "简体中文"]];
 
 function server() {
   let settings = { lang: "zh", theme: "light" };

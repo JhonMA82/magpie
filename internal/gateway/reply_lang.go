@@ -13,8 +13,8 @@ import (
 // (tenacious_eagle_96548 on Discord: a Chinese conversation got an English
 // notice). conversationLang tells the language from what the user wrote,
 // by its script: kana is Japanese, Hangul Korean, Han Chinese (Traditional
-// when its common characters are), and Latin German when its common words
-// are, else English. Those are the GUI's languages, and Korean.
+// when its common characters are), and Latin German or Spanish when its
+// common words are, else English. Those are the GUI's languages, and Korean.
 
 // Languages a gateway text is written in.
 const (
@@ -24,6 +24,7 @@ const (
 	langJA   = "ja"
 	langKO   = "ko"
 	langDE   = "de"
+	langES   = "es"
 )
 
 // langSample is how much of the user's newest words are read: enough for
@@ -104,11 +105,15 @@ const (
 	traditionalOnly = "這個們說來為會時對過還後麼樣沒問題請幫發現開關應該實際導嗎"
 )
 
-// germanWords and englishWords are each language's most common words, for
-// Latin text to be told apart by.
+// germanWords, spanishWords and englishWords are each language's most
+// common words, for Latin text to be told apart by.
 var (
 	germanWords  = wordSet("der die das und nicht ist ich du wir mit ein eine einen zu auf für bitte kannst warum wie noch auch es den dem sich aber oder wenn dass")
-	englishWords = wordSet("the and is not i you we with a an to on for please can why how still also it this that of or if but what")
+	spanishWords = wordSet("el la los las un una unos unas que en para por con como pero porque cuando donde este esta esto estos estas es son está están estoy puedes quiero necesito revisa arregla funciona falla problema archivo código no de del y se lo su favor")
+	// spanishStrong are words few other languages use, so one of them is
+	// enough: a short "ayuda" or "gracias" is Spanish.
+	spanishStrong = wordSet("ayuda gracias hola buenas saludos")
+	englishWords  = wordSet("the and is not i you we with a an to on for please can why how still also it this that of or if but what")
 )
 
 func wordSet(s string) map[string]bool {
@@ -150,10 +155,19 @@ func langOf(s string) string {
 		}
 		return langZH
 	}
-	de, en := 0, 0
+	de, es, en := 0, 0, 0
+	if strings.ContainsAny(s, "¿¡") {
+		es++ // Spanish's opening punctuation, before any word is read
+	}
 	for _, w := range strings.FieldsFunc(strings.ToLower(s), func(r rune) bool { return !unicode.IsLetter(r) }) {
 		if germanWords[w] {
 			de++
+		}
+		if spanishWords[w] {
+			es++
+		}
+		if spanishStrong[w] {
+			es += 2
 		}
 		if englishWords[w] {
 			en++
@@ -161,9 +175,15 @@ func langOf(s string) string {
 		if strings.ContainsAny(w, "äöüß") {
 			de++
 		}
+		if strings.ContainsAny(w, "áéíóúñ") {
+			es++
+		}
 	}
-	if de >= 2 && de > en {
+	if de >= 2 && de > en && de >= es {
 		return langDE
+	}
+	if es >= 2 && es > en && es > de {
+		return langES
 	}
 	return langEN
 }

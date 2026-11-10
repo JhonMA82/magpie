@@ -105,7 +105,7 @@ func TestMaskAlertNeverSaysTheValue(t *testing.T) {
 	if len(f.said) != 1 || f.said[0].total() != 3 {
 		t.Fatalf("said %+v, want the key, the email and the phone", f.said)
 	}
-	for _, lang := range []string{"en", "zh", "zh-TW", "ja", "de"} {
+	for _, lang := range []string{"en", "zh", "zh-TW", "ja", "de", "es"} {
 		title, body := maskAlertText(lang, f.said[0], agentName)
 		text := title + "\n" + body
 		for _, v := range []string{key, mail, phone} {

@@ -149,7 +149,7 @@ test("i18n: every string the home page marks has its Chinese, and no other", asy
   }
 });
 
-test("home: / sends a browser that prefers Chinese, Japanese or German to its page, until a language is picked", async () => {
+test("home: / sends a browser that prefers Chinese, Japanese, German or Spanish to its page, until a language is picked", async () => {
   const env = { ASSETS: { fetch: async () => new Response("<html></html>", { headers: { "Content-Type": "text/plain" } }) } };
   const home = (headers) => worker.fetch(new Request("https://usemagpie.ai/", { headers }), env, ctx);
   const to = async (headers) => {
@@ -172,7 +172,11 @@ test("home: / sends a browser that prefers Chinese, Japanese or German to its pa
   assert.equal(await to({ "Accept-Language": "de-AT" }), "/de/");
   assert.equal(await to({ "Accept-Language": "de", Cookie: "lang=en" }), null);
   assert.equal(await to({ Cookie: "lang=de" }), "/de/");
-  for (const lang of ["zh", "de"]) {
+  assert.equal(await to({ "Accept-Language": "es-MX,es;q=0.9,en;q=0.8" }), "/es/");
+  assert.equal(await to({ "Accept-Language": "es-ES" }), "/es/");
+  assert.equal(await to({ "Accept-Language": "es", Cookie: "lang=en" }), null);
+  assert.equal(await to({ Cookie: "lang=es" }), "/es/");
+  for (const lang of ["zh", "de", "es"]) {
     const res = await worker.fetch(new Request("https://usemagpie.ai/" + lang), env, ctx);
     assert.equal(res.status, 301);
     assert.equal(new URL(res.headers.get("Location")).pathname, `/${lang}/`);
@@ -376,8 +380,9 @@ test("docs: an English docs page sends a browser that prefers Chinese or Japanes
   assert.equal(await to("/docs/start?omarchy=1", { "Accept-Language": "ja-JP" }), "/docs/ja/start?omarchy=1");
   assert.equal(await to("/docs/start", { "Accept-Language": "zh-CN", Cookie: "lang=en" }), 200);
   assert.equal(await to("/docs/start", { Cookie: "lang=ja" }), "/docs/ja/start");
-  // German has no docs: English
+  // German and Spanish have no docs: English
   assert.equal(await to("/docs/start", { "Accept-Language": "de-DE" }), 200);
+  assert.equal(await to("/docs/start", { "Accept-Language": "es-ES" }), 200);
   // a page not written in Chinese yet
   assert.equal(await to("/docs/only-en", { "Accept-Language": "zh-CN" }), 200);
   // a language's own page is never moved
