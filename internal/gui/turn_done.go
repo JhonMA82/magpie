@@ -9,8 +9,8 @@ import (
 )
 
 // turnDoneText is the notification that an agent's turn is done (itieniu
-// on X), in the language (en, zh, zh-TW, ja or de): the agent by its name,
-// how long the turn took, and the folder it works in when it says one.
+// on X), in the language (en, zh, zh-TW, ja, de or es): the agent by its
+// name, how long the turn took, and the folder it works in when it says one.
 func turnDoneText(lang, agent string, t gateway.TurnEnd) (title, body string) {
 	took := turnTook(lang, t.Took)
 	dir := gateway.TurnFolder(t.Folder)
@@ -35,6 +35,11 @@ func turnDoneText(lang, agent string, t gateway.TurnEnd) (title, body string) {
 		if dir != "" {
 			body += " · " + dir
 		}
+	case "es":
+		title, body = agent+" terminó", "Tomó "+took
+		if dir != "" {
+			body += " · " + dir
+		}
 	default:
 		title, body = agent+" is done", "Took "+took
 		if dir != "" {
@@ -52,6 +57,7 @@ func turnTook(lang string, d time.Duration) string {
 	u := map[string]units{
 		"zh": {" 小时 ", " 分 ", " 秒"}, "zh-TW": {" 小時 ", " 分 ", " 秒"},
 		"ja": {" 時間 ", " 分 ", " 秒"}, "de": {" Std. ", " Min. ", " Sek."},
+		"es": {" h ", " min ", " s"},
 	}[lang]
 	if u.h == "" {
 		u = units{"h ", "m ", "s"}

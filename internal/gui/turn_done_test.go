@@ -17,6 +17,7 @@ func TestTurnDoneText(t *testing.T) {
 		{"zh-TW", "Claude Code 已完成", "用時 3 分 12 秒 · magpie"},
 		{"ja", "Claude Code が完了しました", "所要時間 3 分 12 秒 · magpie"},
 		{"de", "Claude Code ist fertig", "Dauer: 3 Min. 12 Sek. · magpie"},
+		{"es", "Claude Code terminó", "Tomó 3 min 12 s · magpie"},
 	} {
 		if title, body := turnDoneText(c.lang, "Claude Code", long); title != c.title || body != c.body {
 			t.Errorf("%s: %q / %q", c.lang, title, body)

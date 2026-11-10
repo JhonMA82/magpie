@@ -45,4 +45,15 @@ magpie.strings({
     "From your Langfuse project's Settings › API Keys. Traces go to {url}": "Aus Settings › API Keys Ihres Langfuse-Projekts. Traces gehen an {url}",
     "Enter your Langfuse address, such as https://langfuse.example.com": "Geben Sie Ihre Langfuse-Adresse ein, z. B. https://langfuse.example.com",
   },
+  es: {
+    "Langfuse needs only its host and your project's keys; any other OTLP/HTTP collector takes its address and headers": "Langfuse solo necesita su host y las claves de tu proyecto; cualquier otro recolector OTLP/HTTP usa su dirección y sus encabezados",
+    "Langfuse host": "Host de Langfuse",
+    "Langfuse Cloud's region, or the address of your own Langfuse": "La región de Langfuse Cloud, o la dirección de tu propio Langfuse",
+    "Cloud EU": "Cloud UE",
+    "Cloud US": "Cloud EE. UU.",
+    "Self-hosted": "Autoalojado",
+    "Public key": "Clave pública",
+    "From your Langfuse project's Settings › API Keys. Traces go to {url}": "Desde Configuración › Claves de API de tu proyecto de Langfuse. Las trazas van a {url}",
+    "Enter your Langfuse address, such as https://langfuse.example.com": "Ingresa la dirección de tu Langfuse, como https://langfuse.example.com",
+  },
 });

@@ -17,6 +17,7 @@ const words = {
   "zh-TW": { reset: "重置於", label: "重新整理這張卡片" },
   ja: { reset: "にリセット", label: "このカードを更新" },
   de: { reset: "Zurückgesetzt", label: "Diese Karte aktualisieren" },
+  es: { reset: "Se restablece", label: "Actualizar esta tarjeta" },
 };
 function fixtures() {
   const now = Date.now(), readAt = iso(now - 40 * 60000), resetsAt = iso(now + 2 * 3600000);

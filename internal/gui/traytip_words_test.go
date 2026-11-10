@@ -25,6 +25,7 @@ func TestTrayTooltipSaysWindowWordsAsTheCard(t *testing.T) {
 		"zh-TW": "WorkBuddy\n積分 0 / 500 積分 · 已用 0% · 27 天 13 小時 後重設",
 		"ja":    "WorkBuddy\nクレジット 0 / 500 クレジット · 使用済み 0% · 27日 13時間 後にリセット",
 		"de":    "WorkBuddy\nCredits 0 / 500 Credits · 0% verbraucht · Reset in 27 T 13 h",
+		"es":    "WorkBuddy\nCréditos 0 / 500 créditos · 0% usado · se restablece en 27 d 13 h",
 	}
 	for lang, w := range want {
 		if _, tip := trayCardText(lang, card, now, false, false, nil); tip != w {
@@ -63,7 +64,7 @@ func TestPluginWindowWordsSaidInEveryLanguage(t *testing.T) {
 		"AI Q&A",                       // orcaterm
 		"5 hours", "7 days",
 	}
-	for _, lang := range []string{"zh", "zh-TW", "ja", "de"} {
+	for _, lang := range []string{"zh", "zh-TW", "ja", "de", "es"} {
 		for _, w := range words {
 			if _, ok := pageWords()[lang][w]; !ok {
 				t.Errorf("i18n.js's %s doesn't say %q", lang, w)

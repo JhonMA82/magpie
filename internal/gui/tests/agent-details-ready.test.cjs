@@ -9,7 +9,7 @@ const { chromium, webkit } = require("playwright");
 const { agentRow } = require("./reader.cjs");
 
 const assets = process.env.MAGPIE_ASSETS || path.resolve(__dirname, "../assets");
-const languages = ["en", "zh", "zh-TW", "ja", "de"];
+const languages = ["en", "zh", "zh-TW", "ja", "de", "es"];
 const row = (id) => `.row.agent[data-id="${id}"]`;
 const link = (page, id) => page.locator(row(id) + " .ag-link");
 function held() {

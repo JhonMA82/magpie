@@ -53,7 +53,7 @@ A later agent click or leaving Agents supersedes the pending opening.
 Once prepared, the row slides to its full height; reduced motion opens it
 at once. Later openings reuse the settings and controls already loaded.
 `agent-details-ready.test.cjs` holds both responses and checks the final
-animation frame against the natural height in both engines and five languages.
+animation frame against the natural height in both engines and six languages.
 
 ### Allowance card refreshes
 
@@ -73,14 +73,14 @@ refreshing it preserves local providers and other remote magpies.
 [`app.js`](../../internal/gui/assets/app.js) own this publication order;
 `quota-refresh-order.test.cjs` covers held responses and failures, and
 `usage-card-refresh.test.cjs` checks the real button in both browser
-engines and all five languages. A cached `readDeferred` card says no
+engines and all six languages. A cached `readDeferred` card says no
 refresh was requested this time; a failed read retains its failure notice.
 The tray panel's Allowances cards use the same `quotaRefresh`, at the
 start of the line under the account (the reset deadline, the error, or a
 balance's name), opened as the card is hovered or the button is focused.
 That line names the deadline ("Resets 14:26"), so no bare `↻` stands for
 it; `renderPanelQuota` puts the focus back on the button after the redraw.
-`panel-quota-refresh.test.cjs` covers it in both engines, all five
+`panel-quota-refresh.test.cjs` covers it in both engines, all six
 languages, at 440 and 360px.
 Redrawing the cards preserves their refresh controls and any running turn.
 A read of every card (`loadQuotas`) draws the cards again in one go, as
@@ -109,7 +109,7 @@ finish Claude Code's first-run setup, then refresh; `magpie claude-code`
 names the executable, including a build magpie downloaded. The original
 error stays in the card's tooltip, and the read never falls back to `-p`.
 `claude-quota-onboarding.test.cjs` presses the active account's button in
-both engines and all five languages, with an account error in a successful
+both engines and all six languages, with an account error in a successful
 HTTP reply, then a successful read after setup and an unrelated card error.
 
 ### Streamed output speed
@@ -633,7 +633,7 @@ covers it in both engines, every language and a narrow window.
 - A searcher named there gets an "If it fails" row right under it (`renderSearcherThen`). The row holds numbered chips for `searcherThen`, the providers that search in its place, in order. Add offers every searcher but the one named and the ones already listed. A chip's picker changes it or removes it. The row isn't shown for Automatic or Off. The failure line names the one that searched instead (`searchFailed.instead`), or says the ones after it failed too. See `searcher-then.test.cjs`. A picker's item is pressed through `pickItem` in `reader.cjs`, which waits for the list drawn again after `/api/model-speeds` answers (#4274).
 - Settings' search APIs are asked in their listed order: each API's row (with its keys' row) is dragged as one, or moved with Alt+↑/↓, and has a switch that turns it off without removing its key (#2286). See [the search APIs' order](gateway-routing.md#the-search-apis-order-and-one-switched-off), `searchArrange` in [`plugins/search/settings.js`](../../internal/gui/assets/plugins/search/settings.js) and `search-order.test.cjs`.
 - Settings' Search APIs add row has a base URL field under the key for every API (#1580): the vendor's own address is its placeholder, picking an API already added fills in its saved URL so a new key alone keeps it, and Add with no key changes only the URL. See [a search API's base URL](gateway-routing.md#a-search-apis-base-url), [`renderSearch`](../../internal/gui/assets/plugins/search/settings.js) and `search-api.test.cjs`.
-- Every user-visible string has zh, zh-TW, ja and de translations with the same placeholders. `gui-zh-tw.test.cjs`, `gui-ja.test.cjs` and `gui-de.test.cjs` fail on a missing one; `gui-zh-tw.test.cjs` also fails on a zh-TW string with a Simplified character left in it.
+- Every user-visible string has zh, zh-TW, ja, de and es translations with the same placeholders. `gui-zh-tw.test.cjs`, `gui-ja.test.cjs`, `gui-de.test.cjs` and `gui-es.test.cjs` fail on a missing one; `gui-zh-tw.test.cjs` also fails on a zh-TW string with a Simplified character left in it.
 - A click never moves the page. Code scrolls a view only with the reader's event in hand (`scrollOnPurpose`); `click-scroll.test.cjs` guards this. A click is taken where the reader left the view: a scroll not theirs made just before it, whose scroll event the browser sends only at the next frame, after the click, is put back first (`backToReader` in the click guard, #1554). What was clicked is held where it was (`hold`); a view at its top when clicked stays at its top, and what comes in above the control moves it down instead (#2134, `update-auto.test.cjs`), as long as it moves less than half its own height and so stays under the pointer. When what the click does leaves the page shorter under it (a list emptied), the view keeps room at its foot for it to stay (`.view-room`), room that goes as the reader scrolls back. A control under what it unrolls (`data-unrolls`, "Show 7 more") goes down with what it opens: what's held is the part it is in, so the rows open downwards. Anything larger above it, as the stage a day picked on Routing brings in above the bar, is scrolled past, and the control stays where it was clicked (`routing-days-fit.test.cjs`, `routing-failed-open.test.cjs`).
 - A page scrolled a screen down shows Scroll to top and Scroll to bottom (emo172, #1090): a small capsule of two chevron buttons at the open page's lower right, in its right margin when a wide window leaves one, else over its corner; above Providers' sticky Add buttons. It goes again near the page's top and over a dialog, and, over the corner, at the page's foot, where the last row can't scroll out from under it, unless it has the pointer or focus. It is placed again on a scroll, a resize, a page shown or hidden, and whenever the open page or one of its own children changes size (a `ResizeObserver`, so a Routing group opened or closed moves it off the editor with no scroll, Jiabubu; see `view-ends-relayout.test.cjs`). It never changes the page's height, which the guard below measures. A press is the reader's scroll (`scrollOnPurpose`, then `arrived` once the page stands still), smooth unless motion is reduced; Scroll to bottom is `aria-disabled` at the foot. Each button's name and tooltip are in every language. The code is [`scrollends.js`](../../internal/gui/assets/scrollends.js), imported on the window's first scroll so the core doesn't carry it; the tray panel has none. Home and End scroll a page as before. See `view-ends.test.cjs`.
 - A scroll not the reader's is put back, so every way the reader scrolls has to count as theirs: the wheel and a trackpad's coast after the lift (WebKit on the Mac plays the coast itself and the page hears its scrolls with no wheel for each, so the wheel starts the same chain a touch fling does, `flings`/`flingUntil`: each scroll keeps the next one the reader's till it rests, and a click ends it; issenn on Discord, `view-trackpad-coast.test.cjs`), a wheel or coast the page is never told of (macOS 13's WebKit, Safari 16.6's, scrolled a view under wheels it never dispatched, so every scroll was put back and only the bar's drag moved the page: three scrolls put back the same way within a second are taken as the reader's run and given back, and so is each one after it that goes on the same way within a second of the last, so a wheel turned slowly or on a loaded Mac loses no step; a scroll by code is one, not a run, and two at rest are still put back; issenn on Discord, `view-wheel-unheard.test.cjs`. Under a click's 4s hold the same holds: only a put-back that comes with the page redrawn since the hold last held (`redrawn`: the view's height or where the first held parts sit moved from `h.lay`) is the hold's and never counts toward a run, so a profile opened on the Agents page and wheeled through at once scrolls, issennknight on Discord, `view-wheel-after-click.test.cjs`. The parts `h.lay` measures are those still in the page that scroll with it: a part drawn again since (the Usage page's tabs, the agents' list under an agent opened or closed) is a redraw once, not at every scroll, and a sticky one (Settings' tabs at a narrow width) is left out, as it sits still while the page scrolls; `view-wheel-after-redraw.test.cjs`), a touch and its fling, the keys, a drag, the scrollbar's own drag (`barDrag`, #1089) and the middle button's autoscroll (`panning`, 多喝热水 on Discord). Chromium and WebView2 give the autoscroll a press of button 1 and then no event of the reader's while it scrolls; from that press the view follows it till Chromium ends it, on the next press (which reaches the page only as a pointerup), a key (a keyup), or the lift after the mouse moved while held. A field the guard brings back into view after putting a scroll back is one focused since the reader last scrolled that view, not one they scrolled away from (`scrolledFrom`): the middle press focuses the button under it. See `view-middle-autoscroll.test.cjs`.
@@ -1208,4 +1208,4 @@ These operations never connect, disconnect or edit an agent's files. Unhiding
 still follows the existing Not set up folding rules. The dialog explains that
 restoring visibility does not pin an unconfigured agent into the main list.
 See `agent-bulk-visibility.test.cjs` for persistence, partial selection, failed
-saves, narrow layouts and all five languages in Chromium and WebKit.
+saves, narrow layouts and all six languages in Chromium and WebKit.

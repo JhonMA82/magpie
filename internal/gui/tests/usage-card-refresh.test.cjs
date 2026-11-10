@@ -77,6 +77,7 @@ const deferredWords = {
   "zh-TW": "本次未主動重新整理",
   ja: "今回は更新を要求していません",
   de: "diesmal nicht neu abgefragt",
+  es: "no se actualizó en esta ocasión",
 };
 for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium", "webkit"])) {
   for (const lang of Object.keys(deferredWords)) {

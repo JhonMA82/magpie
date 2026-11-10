@@ -63,6 +63,11 @@ var webView2Words = map[string][2]string{
 			"Installieren Sie sie von:\r\n%s\r\n\r\noder im Terminal:\r\nwinget install Microsoft.EdgeWebView2Runtime\r\n\r\n" +
 			"Bis dahin öffnet \"magpie web\" magpie im Browser und \"magpie tui\" im Terminal.\r\n\r\n" +
 			"Die Download-Seite jetzt öffnen?"},
+	"es": {"magpie necesita WebView2",
+		"Las ventanas de magpie necesitan Microsoft Edge WebView2 Runtime, que no está instalado en esta computadora.\r\n\r\n" +
+			"Instálalo desde:\r\n%s\r\n\r\no en una terminal:\r\nwinget install Microsoft.EdgeWebView2Runtime\r\n\r\n" +
+			"Hasta entonces, \"magpie web\" abre magpie en tu navegador y \"magpie tui\" en una terminal.\r\n\r\n" +
+			"¿Abrir la página de descarga ahora?"},
 }
 
 // webView2Args sorts what the user put in WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS

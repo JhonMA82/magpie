@@ -43,6 +43,7 @@ function serve(lang, state) {
     }
     if (url.pathname === "/api/usage/quotas") return json(state.cards);
     if (url.pathname === "/api/groups") return json({ groups: [], pools: [] });
+    if (url.pathname === "/api/update/using") return json({});
     if (url.pathname.startsWith("/api/")) {
       assert.equal(route.request().method(), "GET", `unexpected mutation: ${url.pathname}`);
       return json({});
@@ -55,7 +56,7 @@ function serve(lang, state) {
 }
 
 for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium", "webkit"])) {
-  for (const lang of ["en", "zh", "zh-TW", "ja", "de"]) {
+  for (const lang of ["en", "zh", "zh-TW", "ja", "de", "es"]) {
     test(`${engine} ${lang}: clicking the current Claude account's refresh reports onboarding and recovers`, async t => {
       const browser = await (engine === "webkit" ? webkit.launch() : chromium.launch({ channel: "chromium" }));
       t.after(() => browser.close());

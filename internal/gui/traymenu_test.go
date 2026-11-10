@@ -32,6 +32,9 @@ func TestTrayMenuLabels(t *testing.T) {
 		{"de", enSys, "de"},
 		{"system", func() string { return "de-DE" }, "de"},
 		{"", func() string { return "de_AT.UTF-8" }, "de"},
+		{"es", enSys, "es"},
+		{"system", func() string { return "es-MX" }, "es"},
+		{"", func() string { return "es_419.UTF-8" }, "es"},
 		{"zh-TW", enSys, "zh-TW"},
 		{"system", func() string { return "zh-Hant-TW" }, "zh-TW"},
 		{"system", func() string { return "zh-TW" }, "zh-TW"},
@@ -50,7 +53,7 @@ func TestTrayMenuLabels(t *testing.T) {
 	if de != (trayLabels{"magpie öffnen", "Zugangspunkt pausieren", "Version 0.1.500", "Zum Aktualisieren auf 0.1.501 neu starten", "magpie beenden"}) {
 		t.Errorf("de: %+v", de)
 	}
-	for lang, want := range map[string]string{"de": "en", "en": "en", "zh": "zh", "zh-TW": "zh"} {
+	for lang, want := range map[string]string{"de": "en", "es": "en", "en": "en", "zh": "zh", "zh-TW": "zh"} {
 		if got := notesLang(lang); got != want {
 			t.Errorf("notesLang(%q) = %q, want %q", lang, got, want)
 		}
@@ -65,6 +68,9 @@ func TestTrayMenuLabels(t *testing.T) {
 	if ja := trayMenuLabels("ja", "0.1.500", "", false); ja != (trayLabels{"magpie を開く", "ゲートウェイを一時停止", "バージョン 0.1.500", "再起動してアップデート", "magpie を終了"}) {
 		t.Errorf("ja: %+v", ja)
 	}
+	if es := trayMenuLabels("es", "0.1.500", "0.1.501", false); es != (trayLabels{"Abrir magpie", "Pausar gateway", "Versión 0.1.500", "Reiniciar para actualizar a 0.1.501", "Salir de magpie"}) {
+		t.Errorf("es: %+v", es)
+	}
 	if l := trayMenuLabels("zh", "0.1.500", "0.1.501", false); l.restart != "重启以更新到 0.1.501" {
 		t.Errorf("zh restart: %q", l.restart)
 	}
@@ -73,7 +79,7 @@ func TestTrayMenuLabels(t *testing.T) {
 		t.Errorf("en: %+v", en)
 	}
 	// paused, the menu's line resumes the gateway (me2seeks on X)
-	for lang, want := range map[string]string{"en": "Resume Gateway", "zh": "恢复网关", "zh-TW": "恢復閘道", "ja": "ゲートウェイを再開", "de": "Zugangspunkt fortsetzen"} {
+	for lang, want := range map[string]string{"en": "Resume Gateway", "zh": "恢复网关", "zh-TW": "恢復閘道", "ja": "ゲートウェイを再開", "de": "Zugangspunkt fortsetzen", "es": "Reanudar gateway"} {
 		if l := trayMenuLabels(lang, "0.1.500", "", true); l.pause != want {
 			t.Errorf("%s paused: %q, want %q", lang, l.pause, want)
 		}
@@ -121,5 +127,12 @@ func TestSettingsLangRelabelsTray(t *testing.T) {
 	}
 	if l := trayMenuLabels(trayLang(settings.Load().Lang, systemLang), "1", "", false); l.quit != "退出 magpie" {
 		t.Fatalf("after the change the menu reads %+v", l)
+	}
+	post(`{"theme":"dark","lang":"es"}`)
+	if calls != 2 {
+		t.Fatalf("relabelled %d times after zh → es, want 2", calls)
+	}
+	if l := trayMenuLabels(trayLang(settings.Load().Lang, systemLang), "1", "", false); l.quit != "Salir de magpie" {
+		t.Fatalf("after the Spanish change the menu reads %+v", l)
 	}
 }

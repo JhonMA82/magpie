@@ -54,6 +54,7 @@ const cases = [
   ["zh-TW", "en-US", "zh-TW"],
   ["ja", "en-US", "ja-JP"],
   ["de", "en-US", "de-DE"],
+  ["es", "en-US", "es-419"],
 ];
 
 for (const engine of (process.env.BROWSER ? [process.env.BROWSER] : ["chromium", "webkit"])) {
